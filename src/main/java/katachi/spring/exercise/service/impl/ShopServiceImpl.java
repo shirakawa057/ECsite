@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import katachi.spring.exercise.model.CartItem;
+import katachi.spring.exercise.model.MCategory;
 import katachi.spring.exercise.model.MItem;
 import katachi.spring.exercise.repository.ShopMapper;
 import katachi.spring.exercise.service.ShopService;
@@ -18,8 +19,8 @@ public class ShopServiceImpl implements ShopService {
 
 	//	商品一覧取得
 	@Override
-	public List<MItem> findMany(String itemName) {
-		return mapper.findMany(itemName);
+	public List<MItem> findMany(String itemName, Integer categoryId) {
+		return mapper.findMany(itemName, categoryId);
 	}
 
 	//商品取得(1件)
@@ -46,4 +47,15 @@ public class ShopServiceImpl implements ShopService {
 		return mapper.cartItemOne(id);
 	}
 
+	//カテゴリ検索
+	@Override
+	public List<MItem> findCategory(String categoryNumber) {
+		return mapper.findCategory(categoryNumber);
+	}
+
+	//カテゴリ一覧取得
+	@Override
+	public List<MCategory> findCategory() {
+		return mapper.findAllCategory();
+	}
 }

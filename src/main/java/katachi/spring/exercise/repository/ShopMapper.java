@@ -6,13 +6,14 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import katachi.spring.exercise.model.CartItem;
+import katachi.spring.exercise.model.MCategory;
 import katachi.spring.exercise.model.MItem;
 
 @Mapper
 public interface ShopMapper {
 
 	//商品一覧取得
-	public List<MItem> findMany(@Param("name") String itemName);
+	public List<MItem> findMany(@Param("name") String itemName, Integer categoryId);
 
 	//商品取得(1件)
 	public MItem itemOne(Integer id);
@@ -25,5 +26,11 @@ public interface ShopMapper {
 
 	//カートの中の商品取得(1件)
 	public CartItem cartItemOne(Integer id);
+
+	//カテゴリ検索
+	public List<MItem> findCategory(@Param("category") String categoryNumber);
+
+	//カテゴリ一覧取得
+	public List<MCategory> findAllCategory();
 
 }

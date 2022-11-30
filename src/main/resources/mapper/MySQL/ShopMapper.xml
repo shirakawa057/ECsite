@@ -28,6 +28,14 @@
 		<result column="item_price" property="itemPrice" />
 	</resultMap>
 
+	<!-- マッピング定義(カテゴリ) -->
+	<resultMap
+		type="katachi.spring.exercise.model.MCategory" id="Category">
+		<id column="id" property="id" />
+		<result column="category_name" property="categoryName" />
+
+	</resultMap>
+
 
 
 <!-- 商品一覧を取得 -->
@@ -39,17 +47,26 @@
 		, items.item_price
 		, items.item_description
 		, inventory.inventory
+		, category.category_name
 	from
   		items
   	join
   		inventory
   	on
   		items.id = inventory.item_id
+  	join
+  		category
+  	on
+  		items.item_category = category.id
 	where
 		items.is_deleted = 0
 			<if test="name != null">
 	and
 		items.item_name like '%${name}%'
+			</if>
+			<if test="categoryId != null">
+			and
+		items.item_category = #{categoryId}
 			</if>
 
   </select>
@@ -137,6 +154,16 @@ select
 		items.is_deleted = 0
 	and
 		items.item_category = #{category}
+
+  </select>
+
+   <!-- カテゴリ一覧を取得 -->
+  <select id="findAllCategory"  resultMap="Category">
+  	select
+  		category.id
+  		, category.category_name
+  	from
+  		category
 
   </select>
 

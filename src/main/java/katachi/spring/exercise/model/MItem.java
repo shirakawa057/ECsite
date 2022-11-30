@@ -16,5 +16,5 @@ public class MItem {
 	private Date createDateTime;
 	private Date updateDateTime;
 	private Integer inventory;
-	private Integer categoryNumber;
+	private Integer categoryId;
 }

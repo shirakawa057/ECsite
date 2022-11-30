@@ -3,12 +3,13 @@ package katachi.spring.exercise.service;
 import java.util.List;
 
 import katachi.spring.exercise.model.CartItem;
+import katachi.spring.exercise.model.MCategory;
 import katachi.spring.exercise.model.MItem;
 
 public interface ShopService {
 
 	//商品一覧取得
-	public List<MItem> findMany(String itemName);
+	public List<MItem> findMany(String itemName, Integer categoryId);
 
 	//商品取得(1件)
 	public MItem itemOne(Integer id);
@@ -22,4 +23,9 @@ public interface ShopService {
 	//カートの中の商品取得(1件)
 	public CartItem cartItemOne(Integer id);
 
+	//カテゴリ検索
+	public List<MItem> findCategory(String categoryNumber);
+
+	//カテゴリ一覧取得
+	public List<MCategory> findCategory();
 }

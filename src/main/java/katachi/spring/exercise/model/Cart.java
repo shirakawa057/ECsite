@@ -38,7 +38,6 @@ public class Cart implements Serializable {
 			return;
 		}
 
-		//芝先生のコード ここから
 		for (CartItem item : itemList) {
 			if (item.getItemid() == id) {
 				item.add(inventory);
@@ -47,7 +46,6 @@ public class Cart implements Serializable {
 		}
 		MItem item = shopService.itemOne(id);
 		itemList.add(new CartItem(item, inventory));
-		//ここまで
 
 	}
 

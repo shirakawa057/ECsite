@@ -60,15 +60,17 @@ public class ShopController {
 			@RequestParam(value = "pn", defaultValue = "1") Integer pn, Pageable pageable) {
 
 		String itemName = null;
+		Integer categoryId = null;
 		PageHelper.startPage(pn, 3);
 
-		List<MItem> itemList = shopService.findMany(itemName);
+		List<MItem> itemList = shopService.findMany(itemName, categoryId);
 		System.out.println(itemList);
 		PageInfo<MItem> pageInfo = new PageInfo<>(itemList);
 		model.addAttribute("page", pageInfo);
 
 		Integer count = cart.count();
 
+		model.addAttribute("category", shopService.findCategory());
 		model.addAttribute("count", count);
 		model.addAttribute("cart", cart);
 
@@ -169,24 +171,34 @@ public class ShopController {
 
 	//商品検索結果を表示
 	@GetMapping(value = "/list/search")
-	public String searchItem(@RequestParam(required = false) String itemName,
+	public String searchItem(
+			@RequestParam(required = false, value = "itemName", defaultValue = "") String itemName,
+			@RequestParam(value = "categoryId", defaultValue = "") Integer categoryId,
 			@RequestParam(value = "pn", defaultValue = "1") Integer pn, Model model) {
-		PageHelper.startPage(pn, 2);
-		List<MItem> itemList = shopService.findMany(itemName);
+		PageHelper.startPage(pn, 3);
+
+		List<MItem> itemList = shopService.findMany(itemName, categoryId);
 		PageInfo<MItem> pageInfo = new PageInfo<>(itemList);
 		model.addAttribute("page", pageInfo);
 		Integer count = cart.count();
+
+		model.addAttribute("categoryId", categoryId);
+		model.addAttribute("itemName", itemName);
+		model.addAttribute("category", shopService.findCategory());
 		model.addAttribute("count", count);
 		model.addAttribute("cart", cart);
+
 		return "/shop/list";
 	}
 
 	//カテゴリ検索結果を表示
-	@GetMapping(value = "/list/category/{category_id}")
-	public String searchCategory(@RequestParam(required = false) String itemName,
+	@GetMapping(value = "/list/category/{category_number}")
+	public String searchCategory(
+			@PathVariable("category_number") String categoryNumber,
+			@RequestParam(required = false) String itemName,
 			@RequestParam(value = "pn", defaultValue = "1") Integer pn, Model model) {
-		PageHelper.startPage(pn, 2);
-		List<MItem> itemList = shopService.findMany(itemName);
+		PageHelper.startPage(pn, 3);
+		List<MItem> itemList = shopService.findCategory(categoryNumber);
 		PageInfo<MItem> pageInfo = new PageInfo<>(itemList);
 		model.addAttribute("page", pageInfo);
 		Integer count = cart.count();
