@@ -56,8 +56,11 @@ public class ShopController {
 	 * @return
 	 */
 	@GetMapping("/list")
-	public String getitemlist(@ModelAttribute MItem item, Model model,
-			@RequestParam(value = "pn", defaultValue = "1") Integer pn, Pageable pageable) {
+	public String getitemlist(
+			@ModelAttribute MItem item,
+			Model model,
+			@RequestParam(value = "pn", defaultValue = "1") Integer pn,
+			Pageable pageable) {
 
 		String itemName = null;
 		Integer categoryId = null;
@@ -66,10 +69,10 @@ public class ShopController {
 		List<MItem> itemList = shopService.findMany(itemName, categoryId);
 		System.out.println(itemList);
 		PageInfo<MItem> pageInfo = new PageInfo<>(itemList);
-		model.addAttribute("page", pageInfo);
 
 		Integer count = cart.count();
 
+		model.addAttribute("page", pageInfo);
 		model.addAttribute("category", shopService.findCategory());
 		model.addAttribute("count", count);
 		model.addAttribute("cart", cart);
@@ -79,7 +82,10 @@ public class ShopController {
 
 	//商品詳細画面へ遷移
 	@GetMapping("/list/details/{id}")
-	public String getItemDetails(@PathVariable("id") Integer id, Model model) {
+	public String getItemDetails(
+			@PathVariable("id") Integer id,
+			Model model) {
+
 		MItem item = shopService.itemOne(id);
 		model.addAttribute("cart", cart);
 		model.addAttribute("item", item);
@@ -88,7 +94,10 @@ public class ShopController {
 
 	//カートに商品を入れる処理
 	@PostMapping("/list/add")
-	public String postItemAdd(@ModelAttribute ItemAddForm form, BindingResult bindingResult, Model model) {
+	public String postItemAdd(
+			@ModelAttribute ItemAddForm form,
+			BindingResult bindingResult,
+			Model model) {
 
 		cart.add(form.getId(), form.getCartItemInventory()); //ここでインスタンスを生成しなくてもIDとカートの中の商品の個数を引数で渡したほうが良い(疎結合なコードになるから)
 		return "redirect:/list";
@@ -96,19 +105,24 @@ public class ShopController {
 
 	//カートの中を確認する画面へ遷移
 	@GetMapping("list/cart")
-	public String getItemCart(@ModelAttribute ItemAddForm form, Model model) {
-		model.addAttribute("cart", cart);
+	public String getItemCart(
+			@ModelAttribute ItemAddForm form,
+			Model model) {
+
 		//合計金額
 		int money = cart.money();
 		model.addAttribute("money", money);
+		model.addAttribute("cart", cart);
 		return "/shop/cart";
 	}
 
 	//住所入力画面へ遷移
 	@GetMapping("/list/addressForm")
-	public String getItemBuy(@ModelAttribute AddressForm addressForm, Model model) {
-		model.addAttribute("addressForm", addressForm);
+	public String getItemBuy(
+			@ModelAttribute AddressForm addressForm,
+			Model model) {
 
+		model.addAttribute("addressForm", addressForm);
 		model.addAttribute("list", applicationService.getPrefectureList());
 
 		return "/shop/addressForm";
@@ -116,19 +130,24 @@ public class ShopController {
 
 	//注文内容確認画面へ遷移
 	@PostMapping("/list/addressForm")
-	public String postItemBuy(@ModelAttribute AddressForm addressForm, Model model) {
-		model.addAttribute("addressForm", addressForm);
-		model.addAttribute("cart", cart);
+	public String postItemBuy(
+			@ModelAttribute AddressForm addressForm,
+			Model model) {
+
 		//合計金額
 		int money = 0;
 		money = cart.money();
 		model.addAttribute("money", money);
+		model.addAttribute("addressForm", addressForm);
+		model.addAttribute("cart", cart);
 		return "/shop/voucher";
 	}
 
 	//注文受付完了
 	@PostMapping(value = "/list/voucher", params = "order")
-	public String postItemOrder(@ModelAttribute AddressForm addressForm) {
+	public String postItemOrder(
+			@ModelAttribute AddressForm addressForm) {
+
 		//カートの中の商品に応じて在庫数を減らす
 		ArrayList<CartItem> itemList;
 		itemList = cart.getItemList();
@@ -144,7 +163,9 @@ public class ShopController {
 
 	//注文内容修正
 	@PostMapping(value = "/list/voucher", params = "revision")
-	public String postItemOrderRevision(@ModelAttribute AddressForm addressForm, Model model) {
+	public String postItemOrderRevision(
+			@ModelAttribute AddressForm addressForm, Model model) {
+
 		model.addAttribute("addressForm", addressForm);
 		model.addAttribute("list", applicationService.getPrefectureList());
 		return "/shop/addressForm";
@@ -152,8 +173,12 @@ public class ShopController {
 
 	//カートの中の商品数量変更
 	@PostMapping(value = "/list/cartItem", params = "change")
-	public String postChangeCartItem(@ModelAttribute ItemAddForm form, BindingResult bindingResult, Model model,
+	public String postChangeCartItem(
+			@ModelAttribute ItemAddForm form,
+			BindingResult bindingResult,
+			Model model,
 			Errors errors) {
+
 		if (cart.change(form.getId(), form.getCartItemInventory()) == false) {
 			errors.rejectValue("cartItemInventory", "cartItemInventory.over");
 			bindingResult.hasErrors();
@@ -164,7 +189,9 @@ public class ShopController {
 
 	//カートの中の商品を削除
 	@PostMapping(value = "/list/cartItem", params = "deleted")
-	public String postDeletedCartItem(@ModelAttribute ItemAddForm form, Model model) {
+	public String postDeletedCartItem(
+			@ModelAttribute ItemAddForm form, Model model) {
+
 		cart.deleted(form.getId());
 		return "redirect:/list/cart";
 	}
@@ -175,13 +202,13 @@ public class ShopController {
 			@RequestParam(required = false, value = "itemName", defaultValue = "") String itemName,
 			@RequestParam(value = "categoryId", defaultValue = "") Integer categoryId,
 			@RequestParam(value = "pn", defaultValue = "1") Integer pn, Model model) {
-		PageHelper.startPage(pn, 3);
 
+		PageHelper.startPage(pn, 3);
 		List<MItem> itemList = shopService.findMany(itemName, categoryId);
 		PageInfo<MItem> pageInfo = new PageInfo<>(itemList);
-		model.addAttribute("page", pageInfo);
 		Integer count = cart.count();
 
+		model.addAttribute("page", pageInfo);
 		model.addAttribute("categoryId", categoryId);
 		model.addAttribute("itemName", itemName);
 		model.addAttribute("category", shopService.findCategory());
@@ -197,6 +224,7 @@ public class ShopController {
 			@PathVariable("category_number") String categoryNumber,
 			@RequestParam(required = false) String itemName,
 			@RequestParam(value = "pn", defaultValue = "1") Integer pn, Model model) {
+
 		PageHelper.startPage(pn, 3);
 		List<MItem> itemList = shopService.findCategory(categoryNumber);
 		PageInfo<MItem> pageInfo = new PageInfo<>(itemList);
