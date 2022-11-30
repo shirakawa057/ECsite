@@ -1,7 +1,5 @@
 package katachi.spring.exercise.controller;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -25,7 +23,7 @@ import katachi.spring.exercise.service.UserService;
 public class SignupController {
 
 	@Autowired
-	private UserApplicationService userApplicationService;
+	private UserApplicationService applicationService;
 
 	@Autowired
 	private UserService userService;
@@ -37,17 +35,10 @@ public class SignupController {
 	public String getSignup(Model model, Locale locale,
 			@ModelAttribute SignupForm form) {
 		// 性別を取得
-		Map<String, Integer> genderMap = userApplicationService.getGenderMap(locale);
+		Map<String, Integer> genderMap = applicationService.getGenderMap(locale);
 		model.addAttribute("genderMap", genderMap);
 		model.addAttribute("signupForm", form);
-		List<String> list = Arrays.asList("北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
-				"茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県",
-				"新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県",
-				"静岡県", "愛知県", "三重県", "滋賀県", "京都府", "大阪府", "兵庫県",
-				"奈良県", "和歌山県", "鳥取県", "島根県", "岡山県", "広島県", "山口県",
-				"徳島県", "香川県", "愛媛県", "高知県", "福岡県", "佐賀県", "長崎県",
-				"熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県");
-		model.addAttribute("list", list);
+		model.addAttribute("list", applicationService.getPrefectureList());
 		// ユーザー登録画面に遷移
 		return "signup/signup";
 	}
@@ -85,19 +76,12 @@ public class SignupController {
 	public String postCancelSignup(Model model, Locale locale,
 			@ModelAttribute SignupForm form) {
 		// 性別を取得
-		Map<String, Integer> genderMap = userApplicationService.getGenderMap(locale);
+		Map<String, Integer> genderMap = applicationService.getGenderMap(locale);
 		model.addAttribute("genderMap", genderMap);
 		model.addAttribute("signupForm", form);
 		System.out.println("aiueol");
 		System.out.println(form.getUserId());
-		List<String> list = Arrays.asList("北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
-				"茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県",
-				"新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県",
-				"静岡県", "愛知県", "三重県", "滋賀県", "京都府", "大阪府", "兵庫県",
-				"奈良県", "和歌山県", "鳥取県", "島根県", "岡山県", "広島県", "山口県",
-				"徳島県", "香川県", "愛媛県", "高知県", "福岡県", "佐賀県", "長崎県",
-				"熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県");
-		model.addAttribute("list", list);
+		model.addAttribute("list", applicationService.getPrefectureList());
 
 		// ユーザー登録画面に遷移
 		return "signup/signup";

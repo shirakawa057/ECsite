@@ -27,9 +27,6 @@ public interface ShopMapper {
 	//カートの中の商品取得(1件)
 	public CartItem cartItemOne(Integer id);
 
-	//カテゴリ検索
-	public List<MItem> findCategory(@Param("category") String categoryNumber);
-
 	//カテゴリ一覧取得
 	public List<MCategory> findAllCategory();
 

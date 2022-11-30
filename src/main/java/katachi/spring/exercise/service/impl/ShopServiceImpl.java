@@ -47,12 +47,6 @@ public class ShopServiceImpl implements ShopService {
 		return mapper.cartItemOne(id);
 	}
 
-	//カテゴリ検索
-	@Override
-	public List<MItem> findCategory(String categoryNumber) {
-		return mapper.findCategory(categoryNumber);
-	}
-
 	//カテゴリ一覧取得
 	@Override
 	public List<MCategory> findCategory() {

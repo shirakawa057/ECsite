@@ -130,33 +130,6 @@ select
 		items.id = #{id}
    </select>
 
-   <!-- 商品一覧(カテゴリ)を取得 -->
-  <select id="findCategory"  resultMap="item">
-	select
-		items.id
-		, items.item_name
-		, items.item_image
-		, items.item_price
-		, items.item_description
-		, inventory.inventory
-		, category.category_name
-	from
-  		items
-  	join
-  		inventory
-  	on
-  		items.id = inventory.item_id
-  	join
-  		category
-  	on
-  		items.item_category = category.id
-	where
-		items.is_deleted = 0
-	and
-		items.item_category = #{category}
-
-  </select>
-
    <!-- カテゴリ一覧を取得 -->
   <select id="findAllCategory"  resultMap="Category">
   	select

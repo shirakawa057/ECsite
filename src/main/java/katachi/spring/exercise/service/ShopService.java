@@ -23,9 +23,6 @@ public interface ShopService {
 	//カートの中の商品取得(1件)
 	public CartItem cartItemOne(Integer id);
 
-	//カテゴリ検索
-	public List<MItem> findCategory(String categoryNumber);
-
 	//カテゴリ一覧取得
 	public List<MCategory> findCategory();
 }

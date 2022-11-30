@@ -67,7 +67,6 @@ public class ShopController {
 		PageHelper.startPage(pn, 3);
 
 		List<MItem> itemList = shopService.findMany(itemName, categoryId);
-		System.out.println(itemList);
 		PageInfo<MItem> pageInfo = new PageInfo<>(itemList);
 
 		Integer count = cart.count();
@@ -215,23 +214,6 @@ public class ShopController {
 		model.addAttribute("count", count);
 		model.addAttribute("cart", cart);
 
-		return "/shop/list";
-	}
-
-	//カテゴリ検索結果を表示
-	@GetMapping(value = "/list/category/{category_number}")
-	public String searchCategory(
-			@PathVariable("category_number") String categoryNumber,
-			@RequestParam(required = false) String itemName,
-			@RequestParam(value = "pn", defaultValue = "1") Integer pn, Model model) {
-
-		PageHelper.startPage(pn, 3);
-		List<MItem> itemList = shopService.findCategory(categoryNumber);
-		PageInfo<MItem> pageInfo = new PageInfo<>(itemList);
-		model.addAttribute("page", pageInfo);
-		Integer count = cart.count();
-		model.addAttribute("count", count);
-		model.addAttribute("cart", cart);
 		return "/shop/list";
 	}
 
