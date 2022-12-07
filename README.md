@@ -4,7 +4,7 @@
  
 基本的な機能を備えたショッピングサイトです。
 ![サンプル画像](./netshop.png)
-![demo](./demomovie.gif)
+![demo](./demo.gif)
  
 # 使用言語
  
